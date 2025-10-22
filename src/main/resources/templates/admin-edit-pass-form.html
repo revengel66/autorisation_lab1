@@ -11,11 +11,10 @@
 <body>
 <section class="mt-5">
     <div class="container">
-        <h2>Панель пользователя <span th:text="${user.username}">user</span></h2>
+        <h2>Сменить пароль</h2>
         <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
         <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-        <h4 class="mt-4">Изменить пароль</h4>
-        <form th:action="@{/user/password}" method="post" class="mb-4">
+        <form th:action="@{/admin/password}" method="post" class="mb-4">
             <div class="mb-3">
                 <label for="currentPassword" class="form-label">Старый пароль</label>
                 <input type="password" class="form-control" id="currentPassword" name="currentPassword" autocomplete="new-password">
@@ -31,11 +30,8 @@
             <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <button type="submit" class="btn btn-primary">Сохранить</button>
         </form>
+        <a th:href="@{/admin/users}" class="btn btn-primary">Назад к списку</a>
 
-        <form th:action="@{/logout}" method="post">
-            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-            <button type="submit" class="btn btn-primary mt-3">Выйти</button>
-        </form>
     </div>
 </section>
 

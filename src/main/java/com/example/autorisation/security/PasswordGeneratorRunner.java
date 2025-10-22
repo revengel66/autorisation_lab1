@@ -17,6 +17,7 @@ public class PasswordGeneratorRunner implements CommandLineRunner {
         String pass = "admin1234";
         String encoded = passwordEncoder.encode(pass);
         System.out.println("Encoded password: " + encoded);
+
     }
 }
 

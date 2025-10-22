@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class AuthConroller {
 
-    @Autowired
-    private AdminRepository adminRepository;
+    private final AdminRepository adminRepository;
+
+    public AuthConroller(AdminRepository adminRepository) {
+        this.adminRepository = adminRepository;
+    }
 
     @GetMapping("/login")
     public String login() {
