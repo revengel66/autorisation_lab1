@@ -26,6 +26,9 @@
             <div th:if="${param.error}" class="alert alert-danger" role="alert">
                 Ошибка авторизации. Повторите попытку позже.
             </div>
+            <div th:if="${param.blocked}" class="alert alert-danger" role="alert">
+                Аккаунт заблокирован
+            </div>
 
             <div class="form-floating">
                 <input type="text" class="form-control" id="username" name="username" placeholder="Имя пользователя" autocomplete="username">

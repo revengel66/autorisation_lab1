@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -26,6 +27,10 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
                                         AuthenticationException exception) throws IOException, ServletException {
         String username = request.getParameter("username");
 
+        if (exception instanceof LockedException) {
+            getRedirectStrategy().sendRedirect(request, response, "/login?blocked");
+            return;
+        }
         if (exception instanceof UsernameNotFoundException) {
             getRedirectStrategy().sendRedirect(request, response, "/login?userNotFound");
             return;
