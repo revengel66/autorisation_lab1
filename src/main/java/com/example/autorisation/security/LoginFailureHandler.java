@@ -14,16 +14,34 @@ import java.io.IOException;
 @Component
 public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
+    private final LoginAttemptService loginAttemptService;
+
+    public LoginFailureHandler(LoginAttemptService loginAttemptService) {
+        this.loginAttemptService = loginAttemptService;
+    }
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        String targetUrl = "/login?error";
+        String username = request.getParameter("username");
+
         if (exception instanceof UsernameNotFoundException) {
-            targetUrl = "/login?userNotFound";
-        } else if (exception instanceof BadCredentialsException) {
-            targetUrl = "/login?badCredentials";
+            getRedirectStrategy().sendRedirect(request, response, "/login?userNotFound");
+            return;
         }
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+
+        if (exception instanceof BadCredentialsException) {
+            int attemptsLeft = loginAttemptService.recordFailedAttempt(username);
+            if (attemptsLeft <= 0) {
+                getRedirectStrategy().sendRedirect(request, response, "/login?terminated");
+            } else {
+                getRedirectStrategy().sendRedirect(request, response,
+                        "/login?badCredentials&attemptsLeft=" + attemptsLeft);
+            }
+            return;
+        }
+
+        getRedirectStrategy().sendRedirect(request, response, "/login?error");
     }
 }

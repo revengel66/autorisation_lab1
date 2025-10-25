@@ -17,7 +17,11 @@
                 Пользователь с таким логином не найден
             </div>
             <div th:if="${param.badCredentials}" class="alert alert-danger" role="alert">
-                Неверный пароль
+                Неверный пароль.
+                <span th:if="${param.attemptsLeft}" th:text="'Осталось попыток: ' + ${param.attemptsLeft}"></span>
+            </div>
+            <div th:if="${param.terminated}" class="alert alert-danger" role="alert">
+                Приложение завершится из-за трех неудачных попыток входа.
             </div>
             <div th:if="${param.error}" class="alert alert-danger" role="alert">
                 Ошибка авторизации. Повторите попытку позже.

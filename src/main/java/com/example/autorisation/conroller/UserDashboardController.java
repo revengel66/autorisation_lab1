@@ -37,7 +37,6 @@ public class UserDashboardController {
                                  @RequestParam("confirmPassword") String confirmPassword,
                                  @RequestParam("currentPassword") String currentPassword,
                                  RedirectAttributes redirectAttributes) {
-
         if (!passwordEncoder.matches(currentPassword, currentUser.getPassword())) {
             redirectAttributes.addFlashAttribute("error", "Старый пароль введен неверно");
             return "redirect:/user";
@@ -45,6 +44,7 @@ public class UserDashboardController {
         else if (password == null || password.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Пароль не может быть пустым");
             return "redirect:/user";
+
         }
         else if (currentUser.isRestriction() && password.length() < currentUser.getLength()) {
             redirectAttributes.addFlashAttribute("error",
