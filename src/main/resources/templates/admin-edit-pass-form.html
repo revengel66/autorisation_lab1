@@ -6,8 +6,6 @@
 <section class="mt-5">
     <div class="container">
         <h2>Сменить пароль</h2>
-        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
-        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
         <form th:action="@{/admin/password}" method="post" class="mb-4">
             <div class="mb-3">
                 <label for="currentPassword" class="form-label">Старый пароль</label>
@@ -54,6 +52,20 @@
         </div>
     </div>
 </th:block>
+<th:block th:with="
+            successMessage=${message},
+            errorMessage=${error},
+            modalMessage=${successMessage != null ? successMessage : errorMessage},
+            modalClass=${successMessage != null ? 'alert-success' : (errorMessage != null ? 'alert-danger' : '')},
+            show=${modalMessage != null}">
+    <th:block th:replace="~{fragments/layout :: authErrorModal(
+            show=${show},
+            message=${modalMessage},
+            reload=${false},
+            modalClass=${modalClass}
+    )}"></th:block>
+</th:block>
+
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>
 </html>

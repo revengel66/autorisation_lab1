@@ -6,8 +6,6 @@
 <section class="mt-5">
     <div class="container">
         <h2>Панель пользователя <span th:text="${user.username}">user</span></h2>
-        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
-        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
         <h4 class="mt-4">Изменить пароль</h4>
         <form th:action="@{/user/password}" method="post" class="mb-4">
             <div class="mb-3">
@@ -57,6 +55,19 @@
             </div>
         </div>
     </div>
+</th:block>
+<th:block th:with="
+            successMessage=${message},
+            errorMessage=${error},
+            modalMessage=${successMessage != null ? successMessage : errorMessage},
+            modalClass=${successMessage != null ? 'alert-success' : (errorMessage != null ? 'alert-danger' : '')},
+            show=${modalMessage != null}">
+    <th:block th:replace="~{fragments/layout :: authErrorModal(
+            show=${show},
+            message=${modalMessage},
+            reload=${false},
+            modalClass=${modalClass}
+    )}"></th:block>
 </th:block>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

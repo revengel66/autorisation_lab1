@@ -7,23 +7,6 @@
     <div class="container">
         <form th:action="@{/login}" method="post">
             <h1 class="h3 mb-3 fw-normal">Авторизация</h1>
-            <div th:if="${param.userNotFound}" class="alert alert-danger" role="alert">
-                Пользователь с таким логином не найден
-            </div>
-            <div th:if="${param.badCredentials}" class="alert alert-danger" role="alert">
-                Неверный пароль.
-                <span th:if="${param.attemptsLeft}" th:text="'Осталось попыток: ' + ${param.attemptsLeft}"></span>
-            </div>
-            <div th:if="${param.terminated}" class="alert alert-danger" role="alert">
-                Приложение завершится из-за трех неудачных попыток входа.
-            </div>
-            <div th:if="${param.error}" class="alert alert-danger" role="alert">
-                Ошибка авторизации. Повторите попытку позже.
-            </div>
-            <div th:if="${param.blocked}" class="alert alert-danger" role="alert">
-                Аккаунт заблокирован
-            </div>
-
             <div class="form-floating">
                 <input type="text" class="form-control" id="username" name="username" placeholder="Имя пользователя"
                        autocomplete="username">
@@ -41,6 +24,23 @@
 </main>
 <footer th:replace="~{fragments/layout :: footer}"></footer>
 <th:block th:replace="~{fragments/layout :: modals}"></th:block>
+
+<th:block th:with="message=(${param.userNotFound != null} ? 'Пользователь с таким логином не найден' :
+                           (${param.badCredentials != null} ? ('Неверный пароль. Попробуйте ещё раз. Осталось попыток:' + ${param.attemptsLeft}) :
+                           (${param.terminated != null} ? 'Три неверных попытки. Приложение будет закрыто' :
+                           (${param.blocked} ? 'Аккаунт заблокирован.' :
+                           (${param.error != null} ? 'Повторите попытку позже.' : null))))),
+                   reload=${param.terminated != null},
+                   show=${message != null},
+                   modalClass='alert-danger'">
+    <th:block th:replace="~{fragments/layout :: authErrorModal(
+            show=${show},
+            message=${message},
+            reload=${reload},
+            modalClass=${modalClass}
+    )}"></th:block>
+</th:block>
+
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>
 </html>

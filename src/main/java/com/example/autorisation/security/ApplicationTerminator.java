@@ -33,7 +33,7 @@ public class ApplicationTerminator {
         } catch (InterruptedException ignored) {
             Thread.currentThread().interrupt();
         }
-        LOGGER.error("Останавливаем приложение по условию ТЗ (три неудачные попытки ввода пароля).");
+        LOGGER.error("Останавливаем приложение (три неудачные попытки ввода пароля).");
         context.close();
         System.exit(0);
     }
