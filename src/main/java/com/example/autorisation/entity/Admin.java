@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -17,15 +18,22 @@ public class Admin implements UserDetails {
 
     private String username;
     private String password;
+    private int month;
+    @Column(name = "password_expires_at")
+    private LocalDateTime passwordExpiresAt;
 
 
     public Admin() {
     }
-    public Admin(Long id, String username, String password) {
+
+    public Admin(Long id, String username, String password, int month, LocalDateTime passwordExpiresAt) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.month = month;
+        this.passwordExpiresAt = passwordExpiresAt;
     }
+
     public Long getId() {
         return id;
     }
@@ -50,6 +58,21 @@ public class Admin implements UserDetails {
         this.password = password;
     }
 
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public LocalDateTime getPasswordExpiresAt() {
+        return passwordExpiresAt;
+    }
+
+    public void setPasswordExpiresAt(LocalDateTime passwordExpiresAt) {
+        this.passwordExpiresAt = passwordExpiresAt;
+    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -63,7 +86,7 @@ public class Admin implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return passwordExpiresAt == null || passwordExpiresAt.isAfter(LocalDateTime.now());
     }
 
     @Override

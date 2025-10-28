@@ -58,7 +58,7 @@
             modalMessage=${successMessage != null ? successMessage : errorMessage},
             modalClass=${successMessage != null ? 'alert-success' : (errorMessage != null ? 'alert-danger' : '')},
             show=${modalMessage != null}">
-    <th:block th:replace="~{fragments/layout :: authErrorModal(
+    <th:block th:replace="~{fragments/layout :: authNotifModal(
             show=${show},
             message=${modalMessage},
             reload=${false},

@@ -24,16 +24,16 @@
 </main>
 <footer th:replace="~{fragments/layout :: footer}"></footer>
 <th:block th:replace="~{fragments/layout :: modals}"></th:block>
-
 <th:block th:with="message=(${param.userNotFound != null} ? 'Пользователь с таким логином не найден' :
                            (${param.badCredentials != null} ? ('Неверный пароль. Попробуйте ещё раз. Осталось попыток:' + ${param.attemptsLeft}) :
-                           (${param.terminated != null} ? 'Три неверных попытки. Приложение будет закрыто' :
-                           (${param.blocked} ? 'Аккаунт заблокирован.' :
-                           (${param.error != null} ? 'Повторите попытку позже.' : null))))),
+                           (${param.terminated != null} ? 'Три неверных попытки. Приложение будет закрыто.' :
+                           (${param.blocked} ? 'Аккаунт заблокирован. Пожалуйста, обратитесь к администратору.' :
+                           (${param.passwordExpired != null} ? 'Срок действия пароля истёк. Пожалуйста, обратитесь к администратору.' :
+                           (${param.error != null} ? 'Повторите попытку позже.' : null)))))),
                    reload=${param.terminated != null},
                    show=${message != null},
                    modalClass='alert-danger'">
-    <th:block th:replace="~{fragments/layout :: authErrorModal(
+    <th:block th:replace="~{fragments/layout :: authNotifModal(
             show=${show},
             message=${message},
             reload=${reload},

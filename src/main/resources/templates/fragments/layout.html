@@ -49,14 +49,14 @@
             </div>
         </div>
 </th:block>
-    <th:block th:fragment="authErrorModal(show,message,reload,modalClass)">
-        <div class="modal fade" id="error" tabindex="-1" aria-labelledby="errorLabel" aria-hidden="true"
+    <th:block th:fragment="authNotifModal(show,message,reload,modalClass)">
+        <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="notificationLabel" aria-hidden="true"
              data-show="false"
              th:attr="data-show=${show} ? 'true' : 'false', data-reload=${reload ? 'true' : 'false'}">
             <div class="modal-dialog modal-dialog-centered modal-sm">
                 <div class="modal-content" th:classappend="${modalClass}">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="errorLabel"
+                        <h5 class="modal-title" id="notificationLabel"
                             th:text="${modalClass.equals('alert-success')} ? 'Успешно' : 'Ошибка'">
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>

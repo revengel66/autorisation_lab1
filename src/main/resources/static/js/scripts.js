@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const modalEl = document.getElementById('error');
+    attachZeroFallback();
+
+    const modalEl = document.getElementById('notification');
     if (!modalEl) {
         return;
     }
-
     const shouldShowModal = modalEl.dataset.show === 'true';
     if (!shouldShowModal) {
         return;
@@ -25,3 +26,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+function attachZeroFallback() {
+    const fields = ['length', 'month'];
+    fields.forEach((fieldId) => {
+        const input = document.getElementById(fieldId);
+        if (!input) {
+            return;
+        }
+        const ensureZero = () => {
+            if (input.value.trim() === '') {
+                input.value = '0';
+            }
+        };
+        input.addEventListener('blur', ensureZero);
+        input.addEventListener('change', ensureZero);
+    });
+}

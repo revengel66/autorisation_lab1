@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,6 +32,11 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
             getRedirectStrategy().sendRedirect(request, response, "/login?blocked");
             return;
         }
+        if (exception instanceof CredentialsExpiredException) {
+            getRedirectStrategy().sendRedirect(request, response, "/login?passwordExpired");
+            return;
+        }
+
         if (exception instanceof UsernameNotFoundException) {
             getRedirectStrategy().sendRedirect(request, response, "/login?userNotFound");
             return;

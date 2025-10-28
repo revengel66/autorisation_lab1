@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -20,12 +21,15 @@ public class User implements UserDetails {
     private boolean restriction;
     private int length;
     private int month;
+    @Column(name = "password_expires_at")
+    private LocalDateTime passwordExpiresAt;
+
 
 
     public User() {
     }
 
-    public User(Long id, String username, String password, boolean blocked, boolean restriction, int length, int month) {
+    public User(Long id, String username, String password, boolean blocked, boolean restriction, int length, int month, LocalDateTime passwordExpiresAt) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -33,6 +37,7 @@ public class User implements UserDetails {
         this.restriction = restriction;
         this.length = length;
         this.month = month;
+        this.passwordExpiresAt = passwordExpiresAt;
     }
 
     public Long getId() {
@@ -86,6 +91,14 @@ public class User implements UserDetails {
         this.month = month;
     }
 
+    public LocalDateTime getPasswordExpiresAt() {
+        return passwordExpiresAt;
+    }
+
+    public void setPasswordExpiresAt(LocalDateTime passwordExpiresAt) {
+        this.passwordExpiresAt = passwordExpiresAt;
+    }
+
     @PrePersist
     private void onCreate() {
         blocked = false;
@@ -115,7 +128,10 @@ public class User implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        if (!restriction) {
+            return true;
+        }
+        return passwordExpiresAt == null || passwordExpiresAt.isAfter(LocalDateTime.now());
     }
 
     @Override

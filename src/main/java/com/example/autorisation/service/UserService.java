@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,8 +26,20 @@ public class UserService {
             if (existing != null) {
                 user.setUsername(existing.getUsername());
                 user.setPassword(existing.getPassword());
+                user.setPasswordExpiresAt(existing.getPasswordExpiresAt());
+                if (user.isRestriction() && user.getMonth() > 0 ){
+                    LocalDateTime expiresAt = user.getMonth() > 0
+                            ? LocalDateTime.now().plusMonths(user.getMonth())
+                            : null;
+                    user.setPasswordExpiresAt(expiresAt);
+                }
+                if (user.getMonth() == 0){
+                    user.setPasswordExpiresAt(null);
+                }
+
             }
         }
+
         userRepository.save(user);
     }
 
@@ -37,6 +50,10 @@ public class UserService {
         User existing = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
         existing.setPassword(passwordEncoder.encode(rawPassword));
+        LocalDateTime expiresAt = existing.getMonth() > 0
+                ? LocalDateTime.now().plusMonths(existing.getMonth())
+                : null;
+        existing.setPasswordExpiresAt(expiresAt);
         userRepository.save(existing);
     }
 

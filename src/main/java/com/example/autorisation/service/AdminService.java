@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -49,6 +50,10 @@ public class AdminService implements UserDetailsService {
         Admin existing = adminRepository.findById(adminId)
                 .orElseThrow(() -> new IllegalArgumentException("Админ не найден: " + adminId));
         existing.setPassword(passwordEncoder.encode(rawPassword));
+        LocalDateTime expiresAt = existing.getMonth() > 0
+                ? LocalDateTime.now().plusMonths(existing.getMonth())
+                : null;
+        existing.setPasswordExpiresAt(expiresAt);
         adminRepository.save(existing);
     }
 }

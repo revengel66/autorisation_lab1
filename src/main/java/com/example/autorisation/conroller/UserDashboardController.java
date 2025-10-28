@@ -64,8 +64,7 @@ public class UserDashboardController {
         redirectAttributes.addFlashAttribute("message", "Пароль успешно обновлен");
         return "redirect:/user";
     }
-//    1+2/3*4
-//    1+2...3*4
+
     private boolean Restriction(String password) {
         char[] chars = password.toCharArray();
         boolean flag = false;

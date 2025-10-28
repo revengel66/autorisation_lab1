@@ -46,22 +46,6 @@ public class AdminUserController {
         userService.deleteUser(id);
         return "redirect:/admin/users";
     }
-
-    @GetMapping("/toggle-blocking/{id}")
-    public String toggleBlockng(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        user.setBlocked(!user.isBlocked());
-        userService.saveUser(user);
-        return "redirect:/admin/users";
-    }
-    @GetMapping("/toggle-restriction/{id}")
-    public String toggleRestriction(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        user.setRestriction(!user.isRestriction());
-        userService.saveUser(user);
-        return "redirect:/admin/users";
-    }
-
     @GetMapping("/edit/{id}")
     public String editRestriction(@PathVariable Long id, Model model) {
         User user = userService.getUserById(id);
