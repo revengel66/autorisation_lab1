@@ -1,4 +1,4 @@
-package com.example.autorisation.security;
+package com.example.autorisation.crypto;
 
 
 import java.util.Arrays;

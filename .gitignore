@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+/run.log
+/auth.db.enc

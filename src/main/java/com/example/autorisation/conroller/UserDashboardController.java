@@ -1,7 +1,7 @@
 package com.example.autorisation.conroller;
 
 import com.example.autorisation.entity.User;
-import com.example.autorisation.security.Sha256PasswordEncoder;
+import com.example.autorisation.crypto.Sha256PasswordEncoder;
 import com.example.autorisation.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
