@@ -4,6 +4,7 @@ import com.example.autorisation.entity.Admin;
 import com.example.autorisation.entity.User;
 import com.example.autorisation.repository.AdminRepository;
 import com.example.autorisation.repository.UserRepository;
+import com.example.autorisation.security.Sha256PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

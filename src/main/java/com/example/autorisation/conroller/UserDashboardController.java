@@ -1,9 +1,9 @@
 package com.example.autorisation.conroller;
 
 import com.example.autorisation.entity.User;
+import com.example.autorisation.security.Sha256PasswordEncoder;
 import com.example.autorisation.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +17,10 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/user")
 public class UserDashboardController {
-    private final PasswordEncoder passwordEncoder;
+    private final Sha256PasswordEncoder passwordEncoder;
     private final UserService userService;
 
-    public UserDashboardController(UserService userService, PasswordEncoder passwordEncoder) {
+    public UserDashboardController(UserService userService, Sha256PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }

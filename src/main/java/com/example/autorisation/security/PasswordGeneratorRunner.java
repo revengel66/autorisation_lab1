@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class PasswordGeneratorRunner implements CommandLineRunner {
 
-    private PasswordEncoder passwordEncoder;
+    private Sha256PasswordEncoder passwordEncoder;
 
-    public PasswordGeneratorRunner(PasswordEncoder passwordEncoder) {
+    public PasswordGeneratorRunner(Sha256PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
     @Override

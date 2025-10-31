@@ -15,8 +15,8 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 public class SecurityConfig {
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new NullablePasswordEncoder();
+    public Sha256PasswordEncoder sha256PasswordEncoder() {
+        return new Sha256PasswordEncoder();
     }
     @Bean
     public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService,
