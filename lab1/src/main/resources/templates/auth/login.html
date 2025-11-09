@@ -17,6 +17,11 @@
                        autocomplete="current-password">
                 <label for="password">Пароль</label>
             </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Подтвердите пароль"
+                       autocomplete="current-password">
+                <label for="confirmPassword">Подтвердите пароль</label>
+            </div>
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <button class="w-100 btn btn-lg btn-primary" type="submit">Войти</button>
         </form>
@@ -28,8 +33,9 @@
                            (${param.badCredentials != null} ? ('Неверный пароль. Попробуйте ещё раз. Осталось попыток:' + ${param.attemptsLeft}) :
                            (${param.terminated != null} ? 'Три неверных попытки. Приложение будет закрыто.' :
                            (${param.blocked} ? 'Аккаунт заблокирован. Пожалуйста, обратитесь к администратору.' :
+                           (${param.confirmError != null} ? 'Пароли не совпадают. Повторите ввод.' :
                            (${param.passwordExpired != null} ? 'Срок действия пароля истёк. Пожалуйста, обратитесь к администратору.' :
-                           (${param.error != null} ? 'Повторите попытку позже.' : null)))))),
+                           (${param.error != null} ? 'Повторите попытку позже.' : null))))))),
                    reload=${param.terminated != null},
                    show=${message != null},
                    modalClass='alert-danger'">
