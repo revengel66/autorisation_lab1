@@ -30,13 +30,17 @@ public class AdminUserController {
     }
 
     @GetMapping("/new")
-    public String newUser(Model model) {
+    public String newUser(Model model,@ModelAttribute("user") User user) {
         model.addAttribute("user", new User());
         return "user-create-form";
     }
 
     @PostMapping("/save")
-    public String saveUser(@ModelAttribute("user") User user) {
+    public String saveUser(@ModelAttribute("user") User user,RedirectAttributes attrs) {
+        if (user.getId() == null && userService.usernameExists(user.getUsername())) {
+            attrs.addFlashAttribute("error", "Пользователь с таким именем уже существует");
+            return "redirect:/admin/users/new";
+        }
         userService.saveUser(user);
         return "redirect:/admin/users";
     }

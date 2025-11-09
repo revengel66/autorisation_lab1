@@ -42,6 +42,9 @@ public class UserService {
 
         userRepository.save(user);
     }
+    public boolean usernameExists (String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
 
     public void updatePassword(Long userId, String rawPassword) {
         if (rawPassword == null || rawPassword.isBlank()) {
