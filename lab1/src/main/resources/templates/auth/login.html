@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/layout :: head('Авторизация')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main class="form-signin text-center">
+    <div class="container">
+        <form th:action="@{/login}" method="post">
+            <h1 class="h3 mb-3 fw-normal">Авторизация</h1>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="username" name="username" placeholder="Имя пользователя"
+                       autocomplete="username">
+                <label for="username">Имя пользователя</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Пароль"
+                       autocomplete="current-password">
+                <label for="password">Пароль</label>
+            </div>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Войти</button>
+        </form>
+    </div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: modals}"></th:block>
+<th:block th:with="message=(${param.userNotFound != null} ? 'Пользователь с таким логином не найден' :
+                           (${param.badCredentials != null} ? ('Неверный пароль. Попробуйте ещё раз. Осталось попыток:' + ${param.attemptsLeft}) :
+                           (${param.terminated != null} ? 'Три неверных попытки. Приложение будет закрыто.' :
+                           (${param.blocked} ? 'Аккаунт заблокирован. Пожалуйста, обратитесь к администратору.' :
+                           (${param.passwordExpired != null} ? 'Срок действия пароля истёк. Пожалуйста, обратитесь к администратору.' :
+                           (${param.error != null} ? 'Повторите попытку позже.' : null)))))),
+                   reload=${param.terminated != null},
+                   show=${message != null},
+                   modalClass='alert-danger'">
+    <th:block th:replace="~{fragments/layout :: authNotifModal(
+            show=${show},
+            message=${message},
+            reload=${reload},
+            modalClass=${modalClass}
+    )}"></th:block>
+</th:block>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>
