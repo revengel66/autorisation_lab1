@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class DatabaseEncryptionService{
@@ -34,6 +35,7 @@ public class DatabaseEncryptionService{
     private final byte[] key;
     private final byte[] iv;
     private final Object lock = new Object();
+    private final AtomicBoolean databaseJustCreated = new AtomicBoolean(false);
 
     public DatabaseEncryptionService(@Value("${app.db.encrypted-path}") String encryptedPath, @Value("${app.db.decrypted-path}") String decryptedPath, @Value("${app.db.des.key}") String keyHex, @Value("${app.db.des.iv}") String ivHex){
         this.encryptedPath = resolvePath(encryptedPath);
@@ -113,6 +115,7 @@ public class DatabaseEncryptionService{
         } catch (SQLException e) {
             throw new IOException("Не удалось создать новую базу данных: " + target, e);
         }
+        databaseJustCreated.set(true);
     }
 
     // Метод, вызываемый при завершении работы приложения для шифрования базы данных
@@ -138,6 +141,12 @@ public class DatabaseEncryptionService{
                 LOGGER.error("Не удалось зашифровать базу данных при завершении работы.", e);
             }
         }
+    }
+
+    // Флаг, который указывает, была ли база создана на этом запуске.
+    // Возвращает true ровно один раз после создания.
+    public boolean consumeDatabaseJustCreatedFlag() {
+        return databaseJustCreated.getAndSet(false);
     }
     // Метод для шифрования и расшифрования файла с использованием DES в режиме OFB
     private void transformFile(Path source, Path target, int cipherMode) throws GeneralSecurityException, IOException {
