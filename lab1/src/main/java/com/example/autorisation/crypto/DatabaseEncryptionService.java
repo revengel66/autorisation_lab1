@@ -168,6 +168,7 @@ public class DatabaseEncryptionService{
             }
         }
     }
+    //
     // Метод для безопасного удаления файла с перезаписью его содержимого нулями
     private void wipeAndDelete(Path path) throws IOException {
         if (path == null || !Files.exists(path)) {
